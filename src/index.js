@@ -5,7 +5,7 @@ const port = 8080
 const studentArray = require("./InitialData");
 
 let localStudentArray = [...studentArray];
-const maxId = localStudentArray.length;
+let maxId = localStudentArray.length;
 
 app.use(express.urlencoded());
 
