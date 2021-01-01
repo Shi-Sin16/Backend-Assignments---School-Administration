@@ -14,37 +14,41 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-// your code goes here
+//your code goes here
 app.get('/api/student', (req, res) => {
-    res.send(localStudentArray);
-})
+   res.send(localStudentArray);
+});
 
 app.get('/api/student/:id', (req, res) => {
-    const idToSearch = req.params.id;
-    const matched = localStudentArray.filter(
-        (student) => student.id === Number(idToSearch)
-    );
-    if(matched.length === 0) {
-        res.sendStatus(404);
-    } else {
-        res.send(matched[0]);
-    }
+   const idToSearch = req.params.id;
+   const matched = localStudentArray.filter(student => student.id === Number(idToSearch));
+   if(matched.length === 0)
+   {
+       res.sendStatus(404);
+   }
+   else
+   {
+       res.send(matched[0]);
+   }
 });
+
 
 const isNullOrUndefined = (val) => val === null || val === undefined;
 
 app.post('/api/student', (req, res) => {
     const newStudent = req.body;
     const { name, currentClass, division } = newStudent;
-    if(isNullOrUndefined(name) || isNullOrUndefined(currentClass) || isNullOrUndefined(division)) {
+    if(isNullOrUndefined(name) || isNullOrUndefined(currentClass) || isNullOrUndefined(division))
+    {
         res.sendStatus(400);
-    } else {
+    }
+    else
+    {
         const newId = maxId + 1;
         maxId = newId;
         newStudent.id = newId;
-        newStudent.currentClass = Number(currentClass);
         localStudentArray.push(newStudent);
-        res.send({ id: newId });
+        res.send({'id': newId});
     }
 });
 
@@ -55,39 +59,128 @@ app.put('/api/student/:id', (req, res) => {
     const matchedIdx = localStudentArray.findIndex(
         (student) => student.id === Number(idToSearch)
     );
-    if(matchedIdx === -1) {
+    if(matchedIdx === -1)
+    {
         res.sendStatus(400);
-    } else { 
+    } 
+    else
+    {
         if(isNullOrUndefined(name) && isNullOrUndefined(currentClass) && isNullOrUndefined(division)) {
-            res.sendStatus(400)
-        } else {
-        if(!isNullOrUndefined(name)) {
-            localStudentArray[matchedIdx].name = name;
-            res.sendStatus(200);
-        } if(!isNullOrUndefined(currentClass)) {
-            localStudentArray[matchedIdx].currentClass = Number(currentClass);
-            res.sendStatus(200);
-        } if(!isNullOrUndefined(division)) {
-            localStudentArray[matchedIdx].division = division;
-            res.sendStatus(200);
-        }
-        res.sendStatus(400);
-        }
+                        res.sendStatus(400)
+                    } else {
+                    if(!isNullOrUndefined(name)) {
+                        localStudentArray[matchedIdx].name = name;
+                        res.sendStatus(200);
+                    } if(!isNullOrUndefined(currentClass)) {
+                        localStudentArray[matchedIdx].currentClass = Number(currentClass);
+                        res.sendStatus(200);
+                    } if(!isNullOrUndefined(division)) {
+                        localStudentArray[matchedIdx].division = division;
+                        res.sendStatus(200);
+                    }
+                    res.sendStatus(400);
     }
+}
 });
 
 app.delete('/api/student/:id', (req, res) => {
-    const idToSearch = req.params.id;
-    const matchedIdx = localStudentArray.findIndex(
-        (student) => student.id === Number(idToSearch)
-    );
-    if(matchedIdx === -1) {
-        res.sendStatus(404);
-    } else {
-        localStudentArray.splice(matchedIdx, 1);
-        res.sendStatus(200);
-    }
-});
+        const idToSearch = req.params.id;
+        const matchedIdx = localStudentArray.findIndex(
+            (student) => student.id === Number(idToSearch)
+        );
+        if(matchedIdx === -1) {
+            res.sendStatus(404);
+        } else {
+            localStudentArray.splice(matchedIdx, 1);
+            res.sendStatus(200);
+        }
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+// your code goes here
+// app.get('/api/student', (req, res) => {
+//     res.send(localStudentArray);
+// })
+
+// app.get('/api/student/:id', (req, res) => {
+//     const idToSearch = req.params.id;
+//     const matched = localStudentArray.filter(
+//         (student) => student.id === Number(idToSearch)
+//     );
+//     if(matched.length === 0) {
+//         res.sendStatus(404);
+//     } else {
+//         res.send(matched[0]);
+//     }
+// });
+
+// const isNullOrUndefined = (val) => val === null || val === undefined;
+
+// app.post('/api/student', (req, res) => {
+//     const newStudent = req.body;
+//     const { name, currentClass, division } = newStudent;
+//     if(isNullOrUndefined(name) || isNullOrUndefined(currentClass) || isNullOrUndefined(division)) {
+//         res.sendStatus(400);
+//     } else {
+//         const newId = maxId + 1;
+//         maxId = newId;
+//         newStudent.id = newId;
+//         newStudent.currentClass = Number(currentClass);
+//         localStudentArray.push(newStudent);
+//         res.send({ id: newId });
+//     }
+// });
+
+// app.put('/api/student/:id', (req, res) => {
+//     const idToSearch = req.params.id;
+//     const update = req.body;
+//     const { name, currentClass, division } = update;
+//     const matchedIdx = localStudentArray.findIndex(
+//         (student) => student.id === Number(idToSearch)
+//     );
+//     if(matchedIdx === -1) {
+//         res.sendStatus(400);
+//     } else { 
+//         if(isNullOrUndefined(name) && isNullOrUndefined(currentClass) && isNullOrUndefined(division)) {
+//             res.sendStatus(400)
+//         } else {
+//         if(!isNullOrUndefined(name)) {
+//             localStudentArray[matchedIdx].name = name;
+//             res.sendStatus(200);
+//         } if(!isNullOrUndefined(currentClass)) {
+//             localStudentArray[matchedIdx].currentClass = Number(currentClass);
+//             res.sendStatus(200);
+//         } if(!isNullOrUndefined(division)) {
+//             localStudentArray[matchedIdx].division = division;
+//             res.sendStatus(200);
+//         }
+//         res.sendStatus(400);
+//         }
+//     }
+// });
+
+// app.delete('/api/student/:id', (req, res) => {
+//     const idToSearch = req.params.id;
+//     const matchedIdx = localStudentArray.findIndex(
+//         (student) => student.id === Number(idToSearch)
+//     );
+//     if(matchedIdx === -1) {
+//         res.sendStatus(404);
+//     } else {
+//         localStudentArray.splice(matchedIdx, 1);
+//         res.sendStatus(200);
+//     }
+// });
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))
 
